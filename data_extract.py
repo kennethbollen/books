@@ -1,6 +1,9 @@
 import bs4
 import requests 
 
+url = 'https://www.goodreads.com/book/title.json?key={SYqVbtFBa5qkYRo1Q5qhQ}&title=The+Picture+of+Dorian+Gray'
+r = requests.get(url)
+
 #Remove unrelated data when scraping book titles
 web_site_ratings = ['did not like it', 'it was ok', 'liked it', 'really liked it', 'it was amazing', 'View this quote', 'Goodreads Home']
 #book titles scraped off each page

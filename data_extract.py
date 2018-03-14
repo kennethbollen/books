@@ -1,7 +1,7 @@
 import bs4
 import requests 
 
-url = 'https://www.goodreads.com/book/title.json?key={SYqVbtFBa5qkYRo1Q5qhQ}&title=The+Picture+of+Dorian+Gray'
+url = 'https://www.goodreads.com/book/title.xml?key={SYqVbtFBa5qkYRo1Q5qhQ}&title=The+Picture+of+Dorian+Gray'
 r = requests.get(url)
 r.raise_for_status()
 soup = bs4.BeautifulSoup(r.text, 'lxml')

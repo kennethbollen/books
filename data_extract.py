@@ -3,6 +3,12 @@ import requests
 
 url = 'https://www.goodreads.com/book/title.json?key={SYqVbtFBa5qkYRo1Q5qhQ}&title=The+Picture+of+Dorian+Gray'
 r = requests.get(url)
+r.raise_for_status()
+soup = bs4.BeautifulSoup(r.text, 'lxml')
+
+for link in soup.find('average_rating'):
+  book_rating.append(link)
+
 
 #Remove unrelated data when scraping book titles
 web_site_ratings = ['did not like it', 'it was ok', 'liked it', 'really liked it', 'it was amazing', 'View this quote', 'Goodreads Home']

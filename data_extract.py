@@ -51,3 +51,7 @@ for link in soup.find_all('p', {'class':'author'}):
     
 for link in soup.find_all('p', {'class':'publisher'}):
     publisher_ny.append(link.text)
+    
+#see previous weeks list url
+for link in soup.find_all('div', {'class':'arrow-navigation '}):
+    print(link.a['href'])

@@ -1,6 +1,10 @@
 import bs4
 import requests 
 
+books_ny = []
+authors_ny = []
+publisher_ny = []
+
 url = 'https://www.goodreads.com/book/title.xml?key={SYqVbtFBa5qkYRo1Q5qhQ}&title=The+Picture+of+Dorian+Gray'
 r = requests.get(url)
 r.raise_for_status()
@@ -30,3 +34,20 @@ for link in soup.find_all('a'):
       continue
   except:
     continue
+
+#get best seller information from the New York times
+url = 'https://www.nytimes.com/books/best-sellers/combined-print-and-e-book-fiction'
+r = request.get(url)
+r.raise_for_status()
+soup = bs4.BeautifulSoup(r.text, 'lxml')
+
+for link in soup.find_all('h2', {'class':'title'}):
+    books_ny.append(link.text)
+    
+for link in soup.find_all('p', {'class':'author'}):
+    a = link.text
+    a = a.split('by ')
+    authors_ny.append(a[1])
+    
+for link in soup.find_all('p', {'class':'publisher'}):
+    publisher_ny.append(link.text)

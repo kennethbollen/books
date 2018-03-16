@@ -58,6 +58,8 @@ for link in soup.find_all('div', {'class':'arrow-navigation '}):
     print(link.a['href'])
 
 #create a date range to loop through weeks
+base_date = datetime.date(2018, 3, 25)
+
 for i in range(53):
     if i == 0:
         ny_times_urls.append(base_date)
@@ -66,4 +68,39 @@ for i in range(53):
         
  for i in range(len(ny_times_urls)):
     ny_times_urls[i] = 'https://www.nytimes.com/books/best-sellers/' + ny_times_urls[i].strftime('%Y/%m/%d') + '/combined-print-and-e-book-fiction/'
-    
+
+#gathering data from ny times
+for url in ny_times_urls:
+    r = requests.get(url) 
+    r.raise_for_status()
+    soup = bs4.BeautifulSoup(r.text, 'lxml')
+    try:
+        for link in soup.find_all('h2', {'class':'title'}):
+            ny_times_title.append(link.text)
+            print('Downloading book title...')
+            print()
+    except:
+        ny_times_title.append('No title found')
+    try:
+        for link in soup.find_all('p', {'class':'author'}):
+            a = link.text
+            a = a.split('by ')
+            ny_times_author.append(a[1])
+            print('Downloading book author...')
+            print()
+    except:
+        ny_times_author.append('No author found')
+    try:
+        for link in soup.find_all('p', {'class':'publisher'}):
+            ny_times_pub.append(link.text)
+            print('Downloading book publisher...')
+            print()
+            try:
+                for link in soup.find('div', {'class':'date-range tooltip'}):
+                    ny_times_dates.append(link)
+                    print('Adding date...')
+                    print()
+            except:
+                ny_times_dates.append('No date found')
+    except:
+        ny_times_pub.append('No publisher found')

@@ -4,6 +4,7 @@ import requests
 books_ny = []
 authors_ny = []
 publisher_ny = []
+ny_times_urls = []
 
 url = 'https://www.goodreads.com/book/title.xml?key={SYqVbtFBa5qkYRo1Q5qhQ}&title=The+Picture+of+Dorian+Gray'
 r = requests.get(url)
@@ -55,3 +56,14 @@ for link in soup.find_all('p', {'class':'publisher'}):
 #see previous weeks list url
 for link in soup.find_all('div', {'class':'arrow-navigation '}):
     print(link.a['href'])
+
+#create a date range to loop through weeks
+for i in range(53):
+    if i == 0:
+        ny_times_urls.append(base_date)
+    else:
+        ny_times_urls.append(ny_times_urls[i - 1] - datetime.timedelta(days=7))
+        
+ for i in range(len(ny_times_urls)):
+    ny_times_urls[i] = 'https://www.nytimes.com/books/best-sellers/' + ny_times_urls[i].strftime('%Y/%m/%d') + '/combined-print-and-e-book-fiction/'
+    

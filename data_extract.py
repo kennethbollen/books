@@ -12,6 +12,8 @@ ny_times_title = []
 ny_times_author = []
 ny_times_pub = []
 ny_times_dates = []
+#counter used to access the date list and apply the correct best selling week
+counter = -1    
 
 '''
 #url = 'https://www.goodreads.com/book/title.xml?key={SYqVbtFBa5qkYRo1Q5qhQ}&title=The+Picture+of+Dorian+Gray'
@@ -88,10 +90,8 @@ print()
 #alter the url list of dates into urls    
 for i in range(len(best_seller_week)):
     #dates are converted into the a url format
-    ny_times_urls.append('https://www.nytimes.com/books/best-sellers/' + best_seller_week[i].strftime('%Y/%m/%d') + '/combined-print-and-e-book-fiction/'
-
-#counter used to access the date list and apply the correct best selling week
-x = -1    
+    ny_times_urls.append('https://www.nytimes.com/books/best-sellers/' + best_seller_week[i].strftime('%Y/%m/%d') + '/combined-print-and-e-book-fiction/')
+            
 
 #web scrap ny times best seller web pages for books that made the list in the last year
 for url in ny_times_urls:
@@ -99,7 +99,7 @@ for url in ny_times_urls:
     r.raise_for_status()
     soup = bs4.BeautifulSoup(r.text, 'lxml')
     #x will be used to access the date list to correctly apply the best seller week
-    x += 1
+    counter += 1
     try:
         print('Downloading book title...')
         print()
@@ -108,7 +108,7 @@ for url in ny_times_urls:
         for link in soup.find_all('h2', {'class':'title'}):
             ny_times_title.append(link.text)
             #i need the best seller week to be added to the list by the same number of times there are book titles             
-            ny_times_dates.append(best_seller_week[x])
+            ny_times_dates.append(best_seller_week[counter])
     except:
         print('No title found')
         print()

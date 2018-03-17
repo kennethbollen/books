@@ -1,6 +1,7 @@
 import bs4
 import requests
 import datetime
+import pandas as pd
 
 #lists used for goodreads
 books_ny = []
@@ -14,7 +15,9 @@ ny_times_author = []
 ny_times_pub = []
 ny_times_dates = []
 #counter used to access the date list and apply the correct best selling week
-counter = -1    
+counter = -1
+#empty dictionary to capture the rating score
+book_rating = {}
 
 '''
 #url = 'https://www.goodreads.com/book/title.xml?key={SYqVbtFBa5qkYRo1Q5qhQ}&title=The+Picture+of+Dorian+Gray'
@@ -134,3 +137,48 @@ for url in ny_times_urls:
         print('No publisher found...')
         print()
         ny_times_pub.append('No publisher found')
+
+#Create a dataframe to contain all data
+df_books = pd.DataFrame({'Title': ny_times_title, 'Author': ny_times_author, 'Publisher': ny_times_pub, 'Best_Seller_Week': ny_times_dates})
+#Create a list of book titles to find their ratings
+books = df_books['Title'].unique()
+
+#web scrap GoodReads using their API
+for book in books:
+    #GoodReads API developer terms require that no request be made for any method more than once a second
+    print('time delay...')
+    #delay request to GoodReads by 3 seconds
+    time.sleep(3)
+    print('requesting from GoodReads API...')
+    try:
+        #To use the API, replace the white space of the title string with a +
+        url = 'https://www.goodreads.com/book/title.xml?key={SYqVbtFBa5qkYRo1Q5qhQ}&title=%s' % book.replace(' ','+')
+        r = requests.get(url)
+        soup = bs4.BeautifulSoup(r.text, 'lxml')
+        print('Updating book rating dictionary...')
+        for link in soup.find('average_rating'):
+            book_rating[book] = link
+    except:
+        print('Could not retrive')
+
+#convert the book dictionary into a dataframe to merge with df_books
+df_ratings = pd.Series(book_rating, name='ratings')
+df_ratings = pd.DataFrame(df_ratings)
+df_books = pd.merge(df_books, df_ratings, how='left', left_on= df_books['Title'], right_index=True)
+#convert the ratings from a string into a float
+df_books['ratings'] = df_books['ratings'].astype('float')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -167,6 +167,13 @@ df_ratings = pd.DataFrame(df_ratings)
 df_books = pd.merge(df_books, df_ratings, how='left', left_on= df_books['Title'], right_index=True)
 #convert the ratings from a string into a float
 df_books['ratings'] = df_books['ratings'].astype('float')
+#Create a dataframe of books and the number of weeks they were on the best seller list
+df_best_weeks = pd.Series(Counter(df_books['Title']), name='num_weeks')
+df_best_weeks = pd.DataFrame(df_best_weeks)
+#merge together the rating and best seller data
+df_fiction = pd.merge(df_ratings, df_best_weeks, how='inner', left_index=True, right_index=True)
+
+
 
 
 

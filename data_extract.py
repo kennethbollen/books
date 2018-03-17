@@ -1,5 +1,6 @@
 import bs4
-import requests 
+import requests
+import datetime
 
 #lists used for goodreads
 books_ny = []

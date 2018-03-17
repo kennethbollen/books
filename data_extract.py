@@ -1,13 +1,21 @@
 import bs4
 import requests 
 
+#lists used for goodreads
 books_ny = []
 authors_ny = []
 publisher_ny = []
+#lists used for ny times 
+best_seller_week = []
 ny_times_urls = []
+ny_times_title = []
+ny_times_author = []
+ny_times_pub = []
+ny_times_dates = []
 
-url = 'https://www.goodreads.com/book/title.xml?key={SYqVbtFBa5qkYRo1Q5qhQ}&title=The+Picture+of+Dorian+Gray'
-r = requests.get(url)
+'''
+#url = 'https://www.goodreads.com/book/title.xml?key={SYqVbtFBa5qkYRo1Q5qhQ}&title=The+Picture+of+Dorian+Gray'
+#r = requests.get(url)
 r.raise_for_status()
 soup = bs4.BeautifulSoup(r.text, 'lxml')
 
@@ -36,6 +44,7 @@ for link in soup.find_all('a'):
   except:
     continue
 
+
 #get best seller information from the New York times
 url = 'https://www.nytimes.com/books/best-sellers/combined-print-and-e-book-fiction'
 r = request.get(url)
@@ -56,51 +65,71 @@ for link in soup.find_all('p', {'class':'publisher'}):
 #see previous weeks list url
 for link in soup.find_all('div', {'class':'arrow-navigation '}):
     print(link.a['href'])
+'''
 
 #create a date range to loop through weeks
 base_date = datetime.date(2018, 3, 25)
+print('Base date set as: {}'.format(base_date))
 
+#create dates for 52 week range
+print('Creating date range')
+print()
 for i in range(53):
     if i == 0:
-        ny_times_urls.append(base_date)
+        #the first date in the list is the base date and won't require time delta calulation
+        best_seller_week.append(base_date)
     else:
-        ny_times_urls.append(ny_times_urls[i - 1] - datetime.timedelta(days=7))
-        
- for i in range(len(ny_times_urls)):
-    ny_times_urls[i] = 'https://www.nytimes.com/books/best-sellers/' + ny_times_urls[i].strftime('%Y/%m/%d') + '/combined-print-and-e-book-fiction/'
+        #if not base date then append url list with the previous date in the list - 7 days
+        #for time delta to work it requires the format to be in datetime and therefore i can't add the rest of the url in the same loop
+        best_seller_week.append(best_seller_week[i - 1] - datetime.timedelta(days=7))
+    
+print('Creating urls to loop through...')
+print()
+#alter the url list of dates into urls    
+for i in range(len(best_seller_week)):
+    #dates are converted into the a url format
+    ny_times_urls.append('https://www.nytimes.com/books/best-sellers/' + best_seller_week[i].strftime('%Y/%m/%d') + '/combined-print-and-e-book-fiction/'
 
-#gathering data from ny times
+#counter used to access the date list and apply the correct best selling week
+x = -1    
+
+#web scrap ny times best seller web pages for books that made the list in the last year
 for url in ny_times_urls:
     r = requests.get(url) 
     r.raise_for_status()
     soup = bs4.BeautifulSoup(r.text, 'lxml')
+    #x will be used to access the date list to correctly apply the best seller week
+    x += 1
     try:
+        print('Downloading book title...')
+        print()
+        print('Adding best seller date...')
+        print()
         for link in soup.find_all('h2', {'class':'title'}):
             ny_times_title.append(link.text)
-            print('Downloading book title...')
-            print()
+            #i need the best seller week to be added to the list by the same number of times there are book titles             
+            ny_times_dates.append(best_seller_week[x])
     except:
+        print('No title found')
+        print()
         ny_times_title.append('No title found')
     try:
+        print('Downloading book author...')
+        print()
         for link in soup.find_all('p', {'class':'author'}):
             a = link.text
             a = a.split('by ')
             ny_times_author.append(a[1])
-            print('Downloading book author...')
-            print()
     except:
+        print('No author found...')
+        print()
         ny_times_author.append('No author found')
     try:
+        print('Downloading book publisher...')
+        print()
         for link in soup.find_all('p', {'class':'publisher'}):
             ny_times_pub.append(link.text)
-            print('Downloading book publisher...')
-            print()
-            try:
-                for link in soup.find('div', {'class':'date-range tooltip'}):
-                    ny_times_dates.append(link)
-                    print('Adding date...')
-                    print()
-            except:
-                ny_times_dates.append('No date found')
     except:
+        print('No publisher found...')
+        print()
         ny_times_pub.append('No publisher found')

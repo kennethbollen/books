@@ -2,6 +2,7 @@ import bs4
 import requests
 import datetime
 import pandas as pd
+import numpy as np
 
 #lists used for goodreads
 books_ny = []
@@ -9,69 +10,20 @@ authors_ny = []
 publisher_ny = []
 #lists used for ny times 
 best_seller_week = []
-ny_times_urls = []
-ny_times_title = []
-ny_times_author = []
-ny_times_pub = []
+ny_times_urls_fiction = []
+ny_times_urls_non_fiction = []
+ny_times_title_fiction = []
+ny_times_author_fiction = []
+ny_times_pub_fiction = []
+ny_times_title_non_fiction = []
+ny_times_author_non_fiction = []
+ny_times_pub_non_fiction = []
+
 ny_times_dates = []
 #counter used to access the date list and apply the correct best selling week
 counter = -1
 #empty dictionary to capture the rating score
 book_rating = {}
-
-'''
-#url = 'https://www.goodreads.com/book/title.xml?key={SYqVbtFBa5qkYRo1Q5qhQ}&title=The+Picture+of+Dorian+Gray'
-#r = requests.get(url)
-r.raise_for_status()
-soup = bs4.BeautifulSoup(r.text, 'lxml')
-
-for link in soup.find('average_rating'):
-  book_rating.append(link)
-
-
-#Remove unrelated data when scraping book titles
-web_site_ratings = ['did not like it', 'it was ok', 'liked it', 'really liked it', 'it was amazing', 'View this quote', 'Goodreads Home']
-#book titles scraped off each page
-book_titles = []
-
-url = 'https://www.goodreads.com/shelf/show/fiction'
-req = requests.get(url)
-req.raise_for_status()
-soup = bs4.BeautifulSoup(req.text)
-
-#web scaping the book titles 
-for link in soup.find_all('a'):
-  try:
-    #this ensures that when scaping the titles we only get information related to books
-    if link['title'] not in web_site_rating:
-      book_titles.append(link['title'])
-    else:
-      continue
-  except:
-    continue
-
-
-#get best seller information from the New York times
-url = 'https://www.nytimes.com/books/best-sellers/combined-print-and-e-book-fiction'
-r = request.get(url)
-r.raise_for_status()
-soup = bs4.BeautifulSoup(r.text, 'lxml')
-
-for link in soup.find_all('h2', {'class':'title'}):
-    books_ny.append(link.text)
-    
-for link in soup.find_all('p', {'class':'author'}):
-    a = link.text
-    a = a.split('by ')
-    authors_ny.append(a[1])
-    
-for link in soup.find_all('p', {'class':'publisher'}):
-    publisher_ny.append(link.text)
-    
-#see previous weeks list url
-for link in soup.find_all('div', {'class':'arrow-navigation '}):
-    print(link.a['href'])
-'''
 
 #create a date range to loop through weeks
 base_date = datetime.date(2018, 3, 25)
@@ -94,11 +46,11 @@ print()
 #alter the url list of dates into urls    
 for i in range(len(best_seller_week)):
     #dates are converted into the a url format
-    ny_times_urls.append('https://www.nytimes.com/books/best-sellers/' + best_seller_week[i].strftime('%Y/%m/%d') + '/combined-print-and-e-book-fiction/')
+    ny_times_urls_fiction.append('https://www.nytimes.com/books/best-sellers/' + best_seller_week[i].strftime('%Y/%m/%d') + '/combined-print-and-e-book-fiction/')
+    ny_times_urls_non_fiction.append('https://www.nytimes.com/books/best-sellers/' + best_seller_week[i].strftime('%Y/%m/%d') + '/combined-print-and-e-book-nonfiction/')
             
-
 #web scrap ny times best seller web pages for books that made the list in the last year
-for url in ny_times_urls:
+for url in ny_times_urls_fiction:
     r = requests.get(url) 
     r.raise_for_status()
     soup = bs4.BeautifulSoup(r.text, 'lxml')
@@ -110,38 +62,79 @@ for url in ny_times_urls:
         print('Adding best seller date...')
         print()
         for link in soup.find_all('h2', {'class':'title'}):
-            ny_times_title.append(link.text)
+            ny_times_title_fiction.append(link.text)
             #i need the best seller week to be added to the list by the same number of times there are book titles             
             ny_times_dates.append(best_seller_week[counter])
     except:
         print('No title found')
         print()
-        ny_times_title.append('No title found')
+        ny_times_title_fiction.append('No title found')
     try:
         print('Downloading book author...')
         print()
         for link in soup.find_all('p', {'class':'author'}):
             a = link.text
             a = a.split('by ')
-            ny_times_author.append(a[1])
+            ny_times_author_fiction.append(a[1])
     except:
         print('No author found...')
         print()
-        ny_times_author.append('No author found')
+        ny_times_author_fiction.append('No author found')
     try:
         print('Downloading book publisher...')
         print()
         for link in soup.find_all('p', {'class':'publisher'}):
-            ny_times_pub.append(link.text)
+            ny_times_pub_fiction.append(link.text)
     except:
         print('No publisher found...')
         print()
-        ny_times_pub.append('No publisher found')
+        ny_times_pub_fiction.append('No publisher found')
 
+for url in ny_times_urls_non_fiction:
+    r = requests.get(url) 
+    r.raise_for_status()
+    soup = bs4.BeautifulSoup(r.text, 'lxml')
+    #x will be used to access the date list to correctly apply the best seller week
+    counter += 1
+    try:
+        print('Downloading book title...')
+        print()
+        print('Adding best seller date...')
+        print()
+        for link in soup.find_all('h2', {'class':'title'}):
+            ny_times_title_non_fiction.append(link.text)
+    except:
+        print('No title found')
+        print()
+        ny_times_title_non_fiction.append('No title found')
+    try:
+        print('Downloading book author...')
+        print()
+        for link in soup.find_all('p', {'class':'author'}):
+            a = link.text
+            a = a.split('by ')
+            ny_times_author_non_fiction.append(a[1])
+    except:
+        print('No author found...')
+        print()
+        ny_times_author_non_fiction.append('No author found')
+    try:
+        print('Downloading book publisher...')
+        print()
+        for link in soup.find_all('p', {'class':'publisher'}):
+            ny_times_pub_non_fiction.append(link.text)
+    except:
+        print('No publisher found...')
+        print()
+        ny_times_pub_non_fiction.append('No publisher found')
+        
+        
 #Create a dataframe to contain all data
-df_books = pd.DataFrame({'Title': ny_times_title, 'Author': ny_times_author, 'Publisher': ny_times_pub, 'Best_Seller_Week': ny_times_dates})
+df_fiction = pd.DataFrame({'Title': ny_times_title_fiction, 'Author': ny_times_author_fiction, 'Publisher': ny_times_pub_fiction, 'Best_Seller_Week': ny_times_dates, 'Type': 'fiction'})
+df_non_fiction = pd.DataFrame({'Title': ny_times_title_non_fiction, 'Author': ny_times_author_non_fiction, 'Publisher': ny_times_pub_non_fiction, 'Best_Seller_Week': ny_times_dates, 'Type': 'non_fiction'})
 #Create a list of book titles to find their ratings
-books = df_books['Title'].unique()
+books = df_fiction['Title'].unique()
+books = np.append(books, df_non_fiction['Title'].unique())
 
 #web scrap GoodReads using their API
 for book in books:
@@ -164,14 +157,20 @@ for book in books:
 #convert the book dictionary into a dataframe to merge with df_books
 df_ratings = pd.Series(book_rating, name='ratings')
 df_ratings = pd.DataFrame(df_ratings)
-df_books = pd.merge(df_books, df_ratings, how='left', left_on= df_books['Title'], right_index=True)
+#To extract only fiction ratings, merge on left
+df_fiction = pd.merge(df_fiction, df_ratings, how='left', left_on= df_fiction['Title'], right_index=True)
+#To extract only non fiction ratings, merge on left
+df_non_fiction = pd.merge(df_non_fiction, df_ratings, how='left', left_on= df_non_fiction['Title'], right_index=True)
+
 #convert the ratings from a string into a float
-df_books['ratings'] = df_books['ratings'].astype('float')
+df_fiction['ratings'] = df_fiction['ratings'].astype('float')
+df_non_fiction['ratings'] = df_non_fiction['ratings'].astype('float')
+
 #Create a dataframe of books and the number of weeks they were on the best seller list
-df_best_weeks = pd.Series(Counter(df_books['Title']), name='num_weeks')
+'''df_best_weeks = pd.Series(Counter(df_books['Title']), name='num_weeks')
 df_best_weeks = pd.DataFrame(df_best_weeks)
 #merge together the rating and best seller data
-df_fiction = pd.merge(df_ratings, df_best_weeks, how='inner', left_index=True, right_index=True)
+df_fiction = pd.merge(df_ratings, df_best_weeks, how='inner', left_index=True, right_index=True)'''
 
 
 

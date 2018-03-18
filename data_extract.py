@@ -1,6 +1,7 @@
 import bs4
 import requests
 import datetime
+import time
 import pandas as pd
 import numpy as np
 

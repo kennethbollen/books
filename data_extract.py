@@ -27,13 +27,13 @@ counter = -1
 book_rating = {}
 
 #create a date range to loop through weeks
-base_date = datetime.date(2018, 3, 25)
+base_date = datetime.date(2017, 3, 12)
 print('Base date set as: {}'.format(base_date))
 
-#create dates for 52 week range
+#create dates for 5 year/week range
 print('Creating date range')
 print()
-for i in range(53):
+for i in range(261):
     if i == 0:
         #the first date in the list is the base date and won't require time delta calulation
         best_seller_week.append(base_date)

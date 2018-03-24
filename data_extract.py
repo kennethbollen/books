@@ -27,7 +27,7 @@ counter = -1
 book_rating = {}
 
 #create a date range to loop through weeks
-base_date = datetime.date(2017, 3, 12)
+base_date = datetime.date(2018, 4, 1)
 print('Base date set as: {}'.format(base_date))
 
 #create dates for 5 year/week range

@@ -129,7 +129,7 @@ for url in ny_times_urls_non_fiction:
         print()
         ny_times_pub_non_fiction.append('No publisher found')
         
-        
+'''        
 #Create a dataframe to contain all data
 df_fiction = pd.DataFrame({'Title': ny_times_title_fiction, 'Author': ny_times_author_fiction, 'Publisher': ny_times_pub_fiction, 'Best_Seller_Week': ny_times_dates, 'Type': 'fiction'})
 df_non_fiction = pd.DataFrame({'Title': ny_times_title_non_fiction, 'Author': ny_times_author_non_fiction, 'Publisher': ny_times_pub_non_fiction, 'Best_Seller_Week': ny_times_dates, 'Type': 'non_fiction'})
@@ -168,7 +168,7 @@ df_fiction['ratings'] = df_fiction['ratings'].astype('float')
 df_non_fiction['ratings'] = df_non_fiction['ratings'].astype('float')
 
 #Create a dataframe of books and the number of weeks they were on the best seller list
-'''df_best_weeks = pd.Series(Counter(df_books['Title']), name='num_weeks')
+df_best_weeks = pd.Series(Counter(df_books['Title']), name='num_weeks')
 df_best_weeks = pd.DataFrame(df_best_weeks)
 #merge together the rating and best seller data
 df_fiction = pd.merge(df_ratings, df_best_weeks, how='inner', left_index=True, right_index=True)'''

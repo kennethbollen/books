@@ -57,38 +57,26 @@ for url in ny_times_urls_fiction:
     soup = bs4.BeautifulSoup(r.text, 'lxml')
     #x will be used to access the date list to correctly apply the best seller week
     counter += 1
+    print('downloading fictions books from: {}'.format(url))
+    print()
     try:
-        print('Downloading book title...')
-        print()
-        print('Adding best seller date...')
-        print()
         for link in soup.find_all('h2', {'class':'title'}):
             ny_times_title_fiction.append(link.text)
             #i need the best seller week to be added to the list by the same number of times there are book titles             
             ny_times_dates.append(best_seller_week[counter])
     except:
-        print('No title found')
-        print()
         ny_times_title_fiction.append('No title found')
     try:
-        print('Downloading book author...')
-        print()
         for link in soup.find_all('p', {'class':'author'}):
             a = link.text
-            a = a.split('by ')
-            ny_times_author_fiction.append(a[1])
+            a = a.replace('by ', '')
+            ny_times_author_fiction.append(a)
     except:
-        print('No author found...')
-        print()
         ny_times_author_fiction.append('No author found')
     try:
-        print('Downloading book publisher...')
-        print()
         for link in soup.find_all('p', {'class':'publisher'}):
             ny_times_pub_fiction.append(link.text)
     except:
-        print('No publisher found...')
-        print()
         ny_times_pub_fiction.append('No publisher found')
 
 for url in ny_times_urls_non_fiction:
@@ -97,39 +85,26 @@ for url in ny_times_urls_non_fiction:
     soup = bs4.BeautifulSoup(r.text, 'lxml')
     #x will be used to access the date list to correctly apply the best seller week
     counter += 1
+    print('downloading non-fictions books from: {}'.format(url))
+    print()
     try:
-        print('Downloading book title...')
-        print()
-        print('Adding best seller date...')
-        print()
         for link in soup.find_all('h2', {'class':'title'}):
             ny_times_title_non_fiction.append(link.text)
     except:
-        print('No title found')
-        print()
         ny_times_title_non_fiction.append('No title found')
     try:
-        print('Downloading book author...')
-        print()
         for link in soup.find_all('p', {'class':'author'}):
             a = link.text
-            a = a.split('by ')
-            ny_times_author_non_fiction.append(a[1])
+            a = a.replace('by ', '')
+            ny_times_author_non_fiction.append(a)
     except:
-        print('No author found...')
-        print()
         ny_times_author_non_fiction.append('No author found')
     try:
-        print('Downloading book publisher...')
-        print()
         for link in soup.find_all('p', {'class':'publisher'}):
             ny_times_pub_non_fiction.append(link.text)
     except:
-        print('No publisher found...')
-        print()
         ny_times_pub_non_fiction.append('No publisher found')
-        
-'''        
+          
 #Create a dataframe to contain all data
 df_fiction = pd.DataFrame({'Title': ny_times_title_fiction, 'Author': ny_times_author_fiction, 'Publisher': ny_times_pub_fiction, 'Best_Seller_Week': ny_times_dates, 'Type': 'fiction'})
 df_non_fiction = pd.DataFrame({'Title': ny_times_title_non_fiction, 'Author': ny_times_author_non_fiction, 'Publisher': ny_times_pub_non_fiction, 'Best_Seller_Week': ny_times_dates, 'Type': 'non_fiction'})
@@ -168,7 +143,7 @@ df_fiction['ratings'] = df_fiction['ratings'].astype('float')
 df_non_fiction['ratings'] = df_non_fiction['ratings'].astype('float')
 
 #Create a dataframe of books and the number of weeks they were on the best seller list
-df_best_weeks = pd.Series(Counter(df_books['Title']), name='num_weeks')
+'''df_best_weeks = pd.Series(Counter(df_books['Title']), name='num_weeks')
 df_best_weeks = pd.DataFrame(df_best_weeks)
 #merge together the rating and best seller data
 df_fiction = pd.merge(df_ratings, df_best_weeks, how='inner', left_index=True, right_index=True)'''

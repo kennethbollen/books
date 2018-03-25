@@ -115,10 +115,8 @@ books = np.append(books, df_non_fiction['Title'].unique())
 #web scrap GoodReads using their API
 for book in books:
     #GoodReads API developer terms require that no request be made for any method more than once a second
-    print('time delay...')
     #delay request to GoodReads by 3 seconds
-    time.sleep(3)
-    print('requesting from GoodReads API...')
+    time.sleep(2)
     try:
         #To use the API, replace the white space of the title string with a +
         url = 'https://www.goodreads.com/book/title.xml?key={SYqVbtFBa5qkYRo1Q5qhQ}&title=%s' % book.replace(' ','+')

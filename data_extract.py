@@ -140,6 +140,14 @@ df_non_fiction = pd.merge(df_non_fiction, df_ratings, how='left', left_on= df_no
 df_fiction['ratings'] = df_fiction['ratings'].astype('float')
 df_non_fiction['ratings'] = df_non_fiction['ratings'].astype('float')
 
+#concatnate the datasets for one source
+book_list = [df_fiction, df_non_fiction]
+df_books = pd.concat(book_list)
+#fill na ratings with the average
+df_books['ratings'] = df_books['ratings'].fillna(value=df_books['ratings'].mean())
+#sort dataframe by date and ascending ratings
+df_books = df_books.sort_values(by=['Best_Seller_Week', 'Type', 'ratings'], ascending=False)
+
 #Create a dataframe of books and the number of weeks they were on the best seller list
 '''df_best_weeks = pd.Series(Counter(df_books['Title']), name='num_weeks')
 df_best_weeks = pd.DataFrame(df_best_weeks)

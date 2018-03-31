@@ -147,6 +147,8 @@ df_books = pd.concat(book_list)
 df_books['ratings'] = df_books['ratings'].fillna(value=df_books['ratings'].mean())
 #sort dataframe by date and ascending ratings
 df_books = df_books.sort_values(by=['Best_Seller_Week', 'Type', 'ratings'], ascending=False)
+#convert Best Seller Week into a datetime datatype attribute
+df_books['Best_Seller_Week'] = pd.to_datetime(df_books['Best_Seller_Week'])
 
 #Create a dataframe of books and the number of weeks they were on the best seller list
 '''df_best_weeks = pd.Series(Counter(df_books['Title']), name='num_weeks')

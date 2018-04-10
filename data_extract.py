@@ -19,6 +19,8 @@ ny_times_pub_fiction = []
 ny_times_title_non_fiction = []
 ny_times_author_non_fiction = []
 ny_times_pub_non_fiction = []
+ny_times_rank_non_fiction = []
+ny_times_rank_fiction = []
 
 ny_times_dates = []
 #counter used to access the date list and apply the correct best selling week
@@ -27,7 +29,7 @@ counter = -1
 book_rating = {}
 
 #create a date range to loop through weeks
-base_date = datetime.date(2018, 4, 1)
+base_date = datetime.date(2018, 4, 15)
 print('Base date set as: {}'.format(base_date))
 
 #create dates for 5 year/week range
@@ -55,15 +57,25 @@ for url in ny_times_urls_fiction:
     r = requests.get(url) 
     r.raise_for_status()
     soup = bs4.BeautifulSoup(r.text, 'lxml')
-    #x will be used to access the date list to correctly apply the best seller week
+    #counter will be used to access the date list to correctly apply the best seller week
     counter += 1
     print('downloading fictions books from: {}'.format(url))
     print()
     try:
-        for link in soup.find_all('h2', {'class':'title'}):
-            ny_times_title_fiction.append(link.text)
-            #i need the best seller week to be added to the list by the same number of times there are book titles             
-            ny_times_dates.append(best_seller_week[counter])
+    for link in soup.find_all('h2', {'class':'title'}):
+        ny_times_title_fiction.append(link.text)
+        #using the book title to identify the book rank for that week, ranks are contained in unordered list
+        for link_two in soup.find_all('ul', {'class': 'action-menu'}):
+            for link_three in link_two.li:
+                try:
+                    #if statement to find where the book title mathces the current book title in the loop
+                    if link_three['data-title'] == link.text:
+                        #append the identified rank to the list and convert from string to an integer
+                        ny_times_rank_fiction.append(int(link_three['data-rank']))
+                #skip non rank extraneous data
+                except TypeError:
+                    continue
+        ny_times_dates.append(best_seller_week[counter])           
     except:
         ny_times_title_fiction.append('No title found')
     try:
@@ -83,13 +95,24 @@ for url in ny_times_urls_non_fiction:
     r = requests.get(url) 
     r.raise_for_status()
     soup = bs4.BeautifulSoup(r.text, 'lxml')
-    #x will be used to access the date list to correctly apply the best seller week
+    #counter will be used to access the date list to correctly apply the best seller week
     counter += 1
     print('downloading non-fictions books from: {}'.format(url))
     print()
     try:
-        for link in soup.find_all('h2', {'class':'title'}):
-            ny_times_title_non_fiction.append(link.text)
+    for link in soup.find_all('h2', {'class':'title'}):
+        ny_times_title_non_fiction.append(link.text)
+        #using the book title to identify the book rank for that week, ranks are contained in unordered list
+        for link_two in soup.find_all('ul', {'class': 'action-menu'}):
+            for link_three in link_two.li:
+                try:
+                    #if statement to find where the book title mathces the current book title in the loop
+                    if link_three['data-title'] == link.text:
+                        ny_times_rank_non_fiction.append(int(link_three['data-rank']))
+                #append the identified rank to the list and convert from string to an integer
+                except TypeError:
+                    continue
+        ny_times_dates.append(best_seller_week[counter])           
     except:
         ny_times_title_non_fiction.append('No title found')
     try:
@@ -106,8 +129,8 @@ for url in ny_times_urls_non_fiction:
         ny_times_pub_non_fiction.append('No publisher found')
           
 #Create a dataframe to contain all data
-df_fiction = pd.DataFrame({'Title': ny_times_title_fiction, 'Author': ny_times_author_fiction, 'Publisher': ny_times_pub_fiction, 'Best_Seller_Week': ny_times_dates, 'Type': 'fiction'})
-df_non_fiction = pd.DataFrame({'Title': ny_times_title_non_fiction, 'Author': ny_times_author_non_fiction, 'Publisher': ny_times_pub_non_fiction, 'Best_Seller_Week': ny_times_dates, 'Type': 'non_fiction'})
+df_fiction = pd.DataFrame({'Title': ny_times_title_fiction, 'Author': ny_times_author_fiction, 'Publisher': ny_times_pub_fiction, 'Best_Seller_Week': ny_times_dates, 'Rank_Week': ny_times_rank_fiction, 'Type': 'fiction'})
+df_non_fiction = pd.DataFrame({'Title': ny_times_title_non_fiction, 'Author': ny_times_author_non_fiction, 'Publisher': ny_times_pub_non_fiction, 'Best_Seller_Week': ny_times_dates, 'Rank_Week': ny_times_rank_non_fiction, 'Type': 'non_fiction'})
 #Create a list of book titles to find their ratings
 books = df_fiction['Title'].unique()
 books = np.append(books, df_non_fiction['Title'].unique())
@@ -115,7 +138,7 @@ books = np.append(books, df_non_fiction['Title'].unique())
 #web scrap GoodReads using their API
 for book in books:
     #GoodReads API developer terms require that no request be made for any method more than once a second
-    #delay request to GoodReads by 3 seconds
+    #delay request to GoodReads by 2 seconds
     time.sleep(2)
     try:
         #To use the API, replace the white space of the title string with a +

@@ -72,10 +72,13 @@ for url in ny_times_urls_fiction:
                         if link_three['data-title'] == link.text:
                             #append the identified rank to the list and convert from string to an integer
                             ny_times_rank_fiction.append(int(link_three['data-rank']))
+                        #to ensure the dataframe has equal sized columns depsite missing values    
+                        else:
+                            ny_times_rank_fiction.append('missing')
                     #skip non rank extraneous data
                     except TypeError:
                         continue
-        ny_times_dates.append(best_seller_week[counter])           
+            ny_times_dates.append(best_seller_week[counter])           
     except:
         ny_times_title_fiction.append('No title found')
     try:
@@ -109,10 +112,13 @@ for url in ny_times_urls_non_fiction:
                         #if statement to find where the book title mathces the current book title in the loop
                         if link_three['data-title'] == link.text:
                             ny_times_rank_non_fiction.append(int(link_three['data-rank']))
+                        #to ensure the dataframe has equal sized columns depsite missing values    
+                        else:
+                            ny_times_rank_non_fiction.append('missing')
                     #append the identified rank to the list and convert from string to an integer
                     except TypeError:
                         continue
-        ny_times_dates.append(best_seller_week[counter])           
+            ny_times_dates.append(best_seller_week[counter])           
     except:
         ny_times_title_non_fiction.append('No title found')
     try:

@@ -63,18 +63,18 @@ for url in ny_times_urls_fiction:
     print()
     try:
         for link in soup.find_all('h2', {'class':'title'}):
-        ny_times_title_fiction.append(link.text)
-        #using the book title to identify the book rank for that week, ranks are contained in unordered list
-        for link_two in soup.find_all('ul', {'class': 'action-menu'}):
-            for link_three in link_two.li:
-                try:
-                    #if statement to find where the book title mathces the current book title in the loop
-                    if link_three['data-title'] == link.text:
-                        #append the identified rank to the list and convert from string to an integer
-                        ny_times_rank_fiction.append(int(link_three['data-rank']))
-                #skip non rank extraneous data
-                except TypeError:
-                    continue
+            ny_times_title_fiction.append(link.text)
+            #using the book title to identify the book rank for that week, ranks are contained in unordered list
+            for link_two in soup.find_all('ul', {'class': 'action-menu'}):
+                for link_three in link_two.li:
+                    try:
+                        #if statement to find where the book title mathces the current book title in the loop
+                        if link_three['data-title'] == link.text:
+                            #append the identified rank to the list and convert from string to an integer
+                            ny_times_rank_fiction.append(int(link_three['data-rank']))
+                    #skip non rank extraneous data
+                    except TypeError:
+                        continue
         ny_times_dates.append(best_seller_week[counter])           
     except:
         ny_times_title_fiction.append('No title found')
@@ -101,17 +101,17 @@ for url in ny_times_urls_non_fiction:
     print()
     try:
         for link in soup.find_all('h2', {'class':'title'}):
-        ny_times_title_non_fiction.append(link.text)
-        #using the book title to identify the book rank for that week, ranks are contained in unordered list
-        for link_two in soup.find_all('ul', {'class': 'action-menu'}):
-            for link_three in link_two.li:
-                try:
-                    #if statement to find where the book title mathces the current book title in the loop
-                    if link_three['data-title'] == link.text:
-                        ny_times_rank_non_fiction.append(int(link_three['data-rank']))
-                #append the identified rank to the list and convert from string to an integer
-                except TypeError:
-                    continue
+            ny_times_title_non_fiction.append(link.text)
+            #using the book title to identify the book rank for that week, ranks are contained in unordered list
+            for link_two in soup.find_all('ul', {'class': 'action-menu'}):
+                for link_three in link_two.li:
+                    try:
+                        #if statement to find where the book title mathces the current book title in the loop
+                        if link_three['data-title'] == link.text:
+                            ny_times_rank_non_fiction.append(int(link_three['data-rank']))
+                    #append the identified rank to the list and convert from string to an integer
+                    except TypeError:
+                        continue
         ny_times_dates.append(best_seller_week[counter])           
     except:
         ny_times_title_non_fiction.append('No title found')

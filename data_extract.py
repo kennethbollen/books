@@ -88,7 +88,7 @@ for url in ny_times_urls_fiction:
                     ny_times_rank_fiction.append(int(link_two['data-rank']))
                     #skip non rank extraneous data
                 except TypeError:
-                    continue
+                    ny_times_rank_fiction.append('missing')
     except:    
         continue
                     
@@ -128,7 +128,7 @@ for url in ny_times_urls_non_fiction:
                     ny_times_rank_non_fiction.append(int(link_two['data-rank']))
                     #skip non rank extraneous data
                 except TypeError:
-                    continue
+                    ny_times_rank_non_fiction.append('missing')
     except:
         continue
           

@@ -89,7 +89,9 @@ for url in ny_times_urls_fiction:
                     #skip non rank extraneous data
                 except TypeError:
                     continue
-
+     except:
+        continue
+                    
 for url in ny_times_urls_non_fiction:
     r = requests.get(url) 
     r.raise_for_status()
@@ -127,6 +129,8 @@ for url in ny_times_urls_non_fiction:
                     #skip non rank extraneous data
                 except TypeError:
                     continue
+     except:
+        continue
           
 #Create a dataframe to contain all data
 '''

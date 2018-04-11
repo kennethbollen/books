@@ -89,7 +89,7 @@ for url in ny_times_urls_fiction:
                     #skip non rank extraneous data
                 except TypeError:
                     continue
-     except:
+    except:    
         continue
                     
 for url in ny_times_urls_non_fiction:
@@ -129,7 +129,7 @@ for url in ny_times_urls_non_fiction:
                     #skip non rank extraneous data
                 except TypeError:
                     continue
-     except:
+    except:
         continue
           
 #Create a dataframe to contain all data

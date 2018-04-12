@@ -103,7 +103,6 @@ for url in ny_times_urls_non_fiction:
     try:
         for link in soup.find_all('h2', {'class':'title'}):
             ny_times_title_non_fiction.append(link.text)
-            #using the book title to identify the book rank for that week, ranks are contained in unordered list
             ny_times_dates.append(best_seller_week[counter])           
     except:
         ny_times_title_non_fiction.append('No title found')

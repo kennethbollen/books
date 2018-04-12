@@ -69,13 +69,13 @@ pub_yrs_cnt = pd.merge(pub_yrs_cnt, pub_15_cnt, how='left', left_index=True, rig
 pub_yrs_cnt = pd.merge(pub_yrs_cnt, pub_16_cnt, how='left', left_index=True, right_index=True)
 pub_yrs_cnt = pd.merge(pub_yrs_cnt, pub_17_cnt, how='left', left_index=True, right_index=True)
 pub_yrs_cnt = pd.merge(pub_yrs_cnt, pub_18_cnt, how='left', left_index=True, right_index=True)
-pub_yrs_cnt = pd.merge(pub_yrs_cnt, pub_total, how='left', left_index=True, right_index=True)
+pub_yrs_cnt = pd.merge(pub_yrs_cnt, pub_total_cnt, how='left', left_index=True, right_index=True)
 pub_yrs_mean = pd.merge(pub_13_mean, pub_14_mean, how='left', left_index=True, right_index=True)
 pub_yrs_mean = pd.merge(pub_yrs_mean, pub_15_mean, how='left', left_index=True, right_index=True)
 pub_yrs_mean = pd.merge(pub_yrs_mean, pub_16_mean, how='left', left_index=True, right_index=True)
 pub_yrs_mean = pd.merge(pub_yrs_mean, pub_17_mean, how='left', left_index=True, right_index=True)
 pub_yrs_mean = pd.merge(pub_yrs_mean, pub_18_mean, how='left', left_index=True, right_index=True)
-pub_yrs_mean = pd.merge(pub_yrs_mean, pub_total, how='left', left_index=True, right_index=True)
+pub_yrs_mean = pd.merge(pub_yrs_mean, pub_total_mean, how='left', left_index=True, right_index=True)
 
 #change the na into zeros
 pub_yrs_cnt = pub_yrs_cnt.fillna(value=0)

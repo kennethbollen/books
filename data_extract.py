@@ -21,7 +21,6 @@ ny_times_author_non_fiction = []
 ny_times_pub_non_fiction = []
 ny_times_rank_non_fiction = []
 ny_times_rank_fiction = []
-rank_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
 
 ny_times_dates = []
 #counter used to access the date list and apply the correct best selling week
@@ -62,7 +61,7 @@ for url in ny_times_urls_fiction:
     counter += 1
     print('downloading fictions books from: {}'.format(url))
     print()
-    try:
+    '''try:
         for link in soup.find_all('h2', {'class':'title'}):
             ny_times_title_fiction.append(link.text)
             ny_times_dates.append(best_seller_week[counter])           
@@ -79,14 +78,14 @@ for url in ny_times_urls_fiction:
         for link in soup.find_all('p', {'class':'publisher'}):
             ny_times_pub_fiction.append(link.text)
     except:
-        ny_times_pub_fiction.append('No publisher found')
+        ny_times_pub_fiction.append('No publisher found')'''
     try:
         for link in soup.find_all('ul', {'class': 'action-menu'}):
             #using the book title to identify the book rank for that week, ranks are contained in unordered list
             for link_two in link.li:
                 try:
                     #append the identified rank to the list and convert from string to an integer
-                    if link_two['data-rank'] in rank_list:
+                    if link_two['data-rank'] is not None:
                         ny_times_rank_fiction.append(int(link_two['data-rank']))
                     else:
                         ny_times_rank_fiction.append(None)
@@ -104,7 +103,7 @@ for url in ny_times_urls_non_fiction:
     counter += 1
     print('downloading non-fictions books from: {}'.format(url))
     print()
-    try:
+    '''try:
         for link in soup.find_all('h2', {'class':'title'}):
             ny_times_title_non_fiction.append(link.text)          
     except:
@@ -120,14 +119,14 @@ for url in ny_times_urls_non_fiction:
         for link in soup.find_all('p', {'class':'publisher'}):
             ny_times_pub_non_fiction.append(link.text)
     except:
-        ny_times_pub_non_fiction.append('No publisher found')
+        ny_times_pub_non_fiction.append('No publisher found')'''
     try:
         for link in soup.find_all('ul', {'class': 'action-menu'}):
             #using the book title to identify the book rank for that week, ranks are contained in unordered list
             for link_two in link.li:
                 try:
                     #append the identified rank to the list and convert from string to an integer
-                    if link_two['data-rank'] in rank_list:
+                    if link_two['data-rank'] is not None:
                         ny_times_rank_non_fiction.append(link_two['data-rank'])
                     else:
                         ny_times_rank-non_fiction.append(None)

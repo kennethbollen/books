@@ -94,8 +94,8 @@ pub_yrs_mean['pct_mean_chg_17'] = (pub_yrs_mean['yr_2017'] - pub_yrs_mean['yr_20
 #explore changes in user ratings of best seller books over the last 5 years
 
 #filter on the type of books
-books_date_fiction = books.loc[books['Type'] == 'fiction',:].groupby('Best_Seller_Week')['ratings'].mean()
-books_date_non_fiction = books.loc[books['Type'] == 'non_fiction',:].groupby('Best_Seller_Week')['ratings'].mean()
+books_date_fiction = df_books.loc[df_books['Type'] == 'fiction',:].groupby('Best_Seller_Week')['ratings'].mean()
+books_date_non_fiction = df_books.loc[df_books['Type'] == 'non_fiction',:].groupby('Best_Seller_Week')['ratings'].mean()
 
 #resample the dates from weekly to annual
 books_date_fiction = books_date_fiction.resample('A').mean()

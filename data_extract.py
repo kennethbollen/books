@@ -9,6 +9,8 @@ import numpy as np
 books_ny = []
 authors_ny = []
 publisher_ny = []
+gr_api_key = 'XXX'
+
 #lists used for ny times 
 best_seller_week = []
 ny_times_urls_fiction = []
@@ -120,7 +122,7 @@ for book in books:
     time.sleep(2)
     try:
         #To use the API, replace the white space of the title string with a +
-        url = 'https://www.goodreads.com/book/title.xml?key={SYqVbtFBa5qkYRo1Q5qhQ}&title=%s' % book.replace(' ','+')
+        url = 'https://www.goodreads.com/book/title.xml?key=' + gr_api_key % book.replace(' ','+')
         r = requests.get(url)
         soup = bs4.BeautifulSoup(r.text, 'lxml')
         print('Updating book rating dictionary...')

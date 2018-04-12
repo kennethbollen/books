@@ -61,7 +61,7 @@ for url in ny_times_urls_fiction:
     counter += 1
     print('downloading fictions books from: {}'.format(url))
     print()
-    '''try:
+    try:
         for link in soup.find_all('h2', {'class':'title'}):
             ny_times_title_fiction.append(link.text)
             ny_times_dates.append(best_seller_week[counter])           
@@ -78,22 +78,7 @@ for url in ny_times_urls_fiction:
         for link in soup.find_all('p', {'class':'publisher'}):
             ny_times_pub_fiction.append(link.text)
     except:
-        ny_times_pub_fiction.append('No publisher found')'''
-    try:
-        for link in soup.find_all('ul', {'class': 'action-menu'}):
-            #using the book title to identify the book rank for that week, ranks are contained in unordered list
-            for link_two in link.li:
-                try:
-                    #append the identified rank to the list and convert from string to an integer
-                    if link_two['data-rank'] is not None:
-                        ny_times_rank_fiction.append(int(link_two['data-rank']))
-                    else:
-                        ny_times_rank_fiction.append(None)
-                    #skip non rank extraneous data
-                except TypeError:
-                    continue
-    except:    
-        continue
+        ny_times_pub_fiction.append('No publisher found')
                     
 for url in ny_times_urls_non_fiction:
     r = requests.get(url) 
@@ -103,7 +88,7 @@ for url in ny_times_urls_non_fiction:
     counter += 1
     print('downloading non-fictions books from: {}'.format(url))
     print()
-    '''try:
+    try:
         for link in soup.find_all('h2', {'class':'title'}):
             ny_times_title_non_fiction.append(link.text)          
     except:
@@ -119,25 +104,9 @@ for url in ny_times_urls_non_fiction:
         for link in soup.find_all('p', {'class':'publisher'}):
             ny_times_pub_non_fiction.append(link.text)
     except:
-        ny_times_pub_non_fiction.append('No publisher found')'''
-    try:
-        for link in soup.find_all('ul', {'class': 'action-menu'}):
-            #using the book title to identify the book rank for that week, ranks are contained in unordered list
-            for link_two in link.li:
-                try:
-                    #append the identified rank to the list and convert from string to an integer
-                    if link_two['data-rank'] is not None:
-                        ny_times_rank_non_fiction.append(link_two['data-rank'])
-                    else:
-                        ny_times_rank-non_fiction.append(None)
-                    #skip non rank extraneous data
-                except TypeError:
-                    continue
-    except:
-        continue
+        ny_times_pub_non_fiction.append('No publisher found')
           
 #Create a dataframe to contain all data
-'''
 df_fiction = pd.DataFrame({'Title': ny_times_title_fiction, 'Author': ny_times_author_fiction, 'Publisher': ny_times_pub_fiction, 'Best_Seller_Week': ny_times_dates, 'Rank_Week': ny_times_rank_fiction, 'Type': 'fiction'})
 df_non_fiction = pd.DataFrame({'Title': ny_times_title_non_fiction, 'Author': ny_times_author_non_fiction, 'Publisher': ny_times_pub_non_fiction, 'Best_Seller_Week': ny_times_dates, 'Rank_Week': ny_times_rank_non_fiction, 'Type': 'non_fiction'})
 #Create a list of book titles to find their ratings
@@ -182,11 +151,6 @@ df_books = df_books.sort_values(by=['Best_Seller_Week', 'Type', 'ratings'], asce
 #convert Best Seller Week into a datetime datatype attribute
 df_books['Best_Seller_Week'] = pd.to_datetime(df_books['Best_Seller_Week'])
 
-#Create a dataframe of books and the number of weeks they were on the best seller list
-df_best_weeks = pd.Series(Counter(df_books['Title']), name='num_weeks')
-df_best_weeks = pd.DataFrame(df_best_weeks)
-#merge together the rating and best seller data
-df_fiction = pd.merge(df_ratings, df_best_weeks, how='inner', left_index=True, right_index=True)'''
 
 
 

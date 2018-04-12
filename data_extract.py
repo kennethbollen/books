@@ -85,10 +85,10 @@ for url in ny_times_urls_fiction:
             for link_two in link.li:
                 try:
                     #append the identified rank to the list and convert from string to an integer
-                    ny_times_rank_fiction.append(int(link_two['data-rank']))
+                    ny_times_rank_fiction.append(link_two['data-rank'])
                     #skip non rank extraneous data
                 except TypeError:
-                    ny_times_rank_fiction.append('missing')
+                    continue
     except:    
         continue
                     
@@ -102,8 +102,7 @@ for url in ny_times_urls_non_fiction:
     print()
     try:
         for link in soup.find_all('h2', {'class':'title'}):
-            ny_times_title_non_fiction.append(link.text)
-            ny_times_dates.append(best_seller_week[counter])           
+            ny_times_title_non_fiction.append(link.text)          
     except:
         ny_times_title_non_fiction.append('No title found')
     try:
@@ -124,10 +123,10 @@ for url in ny_times_urls_non_fiction:
             for link_two in link.li:
                 try:
                     #append the identified rank to the list and convert from string to an integer
-                    ny_times_rank_non_fiction.append(int(link_two['data-rank']))
+                    ny_times_rank_non_fiction.append(link_two['data-rank'])
                     #skip non rank extraneous data
                 except TypeError:
-                    ny_times_rank_non_fiction.append('missing')
+                    continue
     except:
         continue
           

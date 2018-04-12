@@ -21,6 +21,7 @@ ny_times_author_non_fiction = []
 ny_times_pub_non_fiction = []
 ny_times_rank_non_fiction = []
 ny_times_rank_fiction = []
+rank_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
 
 ny_times_dates = []
 #counter used to access the date list and apply the correct best selling week
@@ -85,7 +86,10 @@ for url in ny_times_urls_fiction:
             for link_two in link.li:
                 try:
                     #append the identified rank to the list and convert from string to an integer
-                    ny_times_rank_fiction.append(link_two['data-rank'])
+                    if link_two['data-rank'] in rank_list:
+                        ny_times_rank_fiction.append(int(link_two['data-rank']))
+                    else:
+                        ny_times_rank_fiction.append(None)
                     #skip non rank extraneous data
                 except TypeError:
                     continue
@@ -123,7 +127,10 @@ for url in ny_times_urls_non_fiction:
             for link_two in link.li:
                 try:
                     #append the identified rank to the list and convert from string to an integer
-                    ny_times_rank_non_fiction.append(link_two['data-rank'])
+                    if link_two['data-rank'] in rank_list:
+                        ny_times_rank_non_fiction.append(link_two['data-rank'])
+                    else:
+                        ny_times_rank-non_fiction.append(None)
                     #skip non rank extraneous data
                 except TypeError:
                     continue

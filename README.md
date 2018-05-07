@@ -1,6 +1,15 @@
 NY Times Best Seller Books with GoodReads User Ratings
 ======================================================
-Project that investigated how book publisher's performed over the last 5-years on the New York best seller times list and comparing that with the books average user rating (provided by GoodReads.com) 
+Project that investigated how book publisher's performed over the last 5-years on the New York best seller times list and comparing that with the books average user rating (provided by GoodReads.com)
+
+Overview
+-----------
+Languages: Python 3  
+Source: https://www.nytimes.com/books/best-sellers/  
+Source: https://www.goodreads.com/api  
+Time period: 2013 - 2018  
+Time of analysis: March 2018 - April 2018  
+Packages used: pandas, numpy, datetime, time, chardet and matplotlib  
 
 Data Extract (data_extract.py)
 ------------------------------

@@ -161,7 +161,7 @@ vals = ax2.get_yticks()
 ax2.set_yticklabels(['{:3.2f}%'.format(x*100) for x in vals])
 ax2.set_ylabel('% Change')
 
-ax.legend((rects1[0], rects2[0], line1[0]), ('2013', '2017', '% Change'))
+ax.legend((yr13[0], yr17[0], line1[0]), ('2013', '2017', '% Change'))
 
 
 autolabel(y13)

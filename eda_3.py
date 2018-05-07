@@ -147,7 +147,7 @@ top_10_delta = pd.Series((top_10_pub['yr_2017'] - top_10_pub['yr_2013'])/top_10_
 ind = np.arange(N)
 fig, ax = plt.subplots()
 y13 = ax.bar(ind, top_10_pub['yr_2013'], width, color='r')
-y17 = ax.bar(ind + width, split_test['yr_2017'], width, color='y')
+y17 = ax.bar(ind + width, top_10_pub['yr_2017'], width, color='y')
 ax.set_ylabel('Number of NY Times Best Sellers')
 ax.set_xlabel('Publishers (2013 vs 2017')
 ax.set_title('Change in Num of Best Sellers for Top 10 Publishers')

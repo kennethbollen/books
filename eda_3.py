@@ -161,7 +161,7 @@ vals = ax2.get_yticks()
 ax2.set_yticklabels(['{:3.2f}%'.format(x*100) for x in vals])
 ax2.set_ylabel('% Change')
 
-ax.legend((yr13[0], yr17[0], line1[0]), ('2013', '2017', '% Change'))
+ax.legend((y13[0], y17[0], line1[0]), ('2013', '2017', '% Change'))
 
 
 autolabel(y13)
@@ -195,7 +195,7 @@ ind = np.arange(N)
 width = 0.35
 fig, ax = plt.subplots()
 ax.set_xticks(ind + width / 2)
-ax.set_xticklabels(rating_xlabel)
+ax.set_xticklabels(ratings_xlabels)
 
 for pub in top_10_ratings.columns:
     ax.plot(ax.get_xticks(), top_10_ratings[pub], linestyle='-', marker='o')
@@ -204,5 +204,6 @@ ax.set_xlabel('Years')
 ax.set_ylabel('Average User Ratings')
 ax.set_title('User Ratings for Publication Books over 5 years')
 ax.legend(loc='best')
+plt.show()
 
 
